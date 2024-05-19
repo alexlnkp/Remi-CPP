@@ -2,10 +2,7 @@
 
 set -o nounset
 
-rm -rf build/
+mkdir -p build && cd build || exit
 
-mkdir build && cd build
-
-cmake .. && make
-
-cd ..
+cmake .. -DCMAKE_BUILD_TYPE=Release && cd ..
+cmake --build build
