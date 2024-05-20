@@ -1,20 +1,22 @@
 cmake_minimum_required(VERSION 3.29)
 
-project(RemiCPP)
-
+project(
+  RemiCPP
+  LANGUAGES CXX
+  VERSION 0.0.7
+  DESCRIPTION "Remi C++"
+  HOMEPAGE_URL "https://github.com/alexlnkp/RemiCPP")
 
 set(CMAKE_CXX_FLAGS_DEBUG_INIT "-Wall -Werror -g -O0")
 set(CMAKE_CXX_FLAGS_RELEASE_INIT "-Wall -Werror -O3")
 
-###############################################################################
-## file globbing ##############################################################
-###############################################################################
+set(CMAKE_CXX_STANDARD 20)
 
-file(GLOB_RECURSE sources      src/*.cpp src/*.h)
+# file globbing ##############################################################
 
-###############################################################################
-## target definitions #########################################################
-###############################################################################
+file(GLOB_RECURSE sources src/*.cpp src/*.h)
+
+# target definitions #########################################################
 
 add_subdirectory(lib/sentencepiece)
 
@@ -29,7 +31,6 @@ target_link_libraries(${PROJECT_NAME} CTranslate2::ctranslate2)
 target_link_libraries(${PROJECT_NAME} libsentencepiece.so)
 
 add_custom_command(
-    TARGET ${PROJECT_NAME}
-    POST_BUILD
-    COMMAND mv ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/output/${PROJECT_NAME}
-)
+  TARGET ${PROJECT_NAME}
+  POST_BUILD
+  COMMAND mv ${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/output/${PROJECT_NAME})
