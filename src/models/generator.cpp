@@ -15,7 +15,7 @@ GeneratorModel::~GeneratorModel() {
     delete _generator;
 }
 
-BATCH GeneratorModel::generate(const BATCH &encoded_prompt) const {
+BATCH_SLICES GeneratorModel::generate(const BATCH_SLICES &encoded_prompt) const {
     return _generator->generate_batch_async(encoded_prompt).at(0).get().sequences;
 }
 

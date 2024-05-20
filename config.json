@@ -1,0 +1,11 @@
+{
+  "model_info": {
+    "model_path": "assets/hftf/ct2-ll7m"
+  },
+  "tokenizer_info": {
+    "tokenizer_path": "/home/alex/.huggingface/hub/models--JosephusCheung--LL7M/snapshots/9b31bbf38a43d41eaf166fb3573f706b23cb1c13/tokenizer.model"
+  },
+  "device": "cpu",
+  "batch_size": 1,
+  "max_seq_len": 1024
+}

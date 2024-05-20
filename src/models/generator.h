@@ -33,7 +33,7 @@ public:
     ~GeneratorModel();
 
     NON_NULL(1)
-    BATCH generate(const BATCH &encoded_prompt) const;
+    BATCH_SLICES generate(const BATCH_SLICES &encoded_prompt) const;
 
 private:
     models::ModelLoader *_model_loader;

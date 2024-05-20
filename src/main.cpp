@@ -1,51 +1,43 @@
 #include <iostream>
 #include <memory>
 
+#include <nlohmann/json.hpp>
+
 #include <ctranslate2/generator.h>
 #include <ctranslate2/models/model.h>
+
+#include "common/json_handler.h"
 
 #include "common/prompt_mod.h"
 #include "models/tokenizer.h"
 // #include "models/generator.h"
 
-#define TOKENIZER_PATH "/home/alex/.huggingface/hub/models--JosephusCheung--LL7M/snapshots/9b31bbf38a43d41eaf166fb3573f706b23cb1c13/tokenizer.model"
-
-#define GENERATOR_PATH "models/ct2-ll7m"
 
 int main() {
     std::ios::sync_with_stdio(false);
 
-    ctranslate2::Tokenizer sp(TOKENIZER_PATH);
+    nlohmann::json config_json = remi::json::parse_json_file("config.json");
+
+    auto tokenizer_path = config_json["tokenizer_info"]["tokenizer_path"].get<std::string>();
+    auto generator_path = config_json["model_info"]["model_path"].get<std::string>();
+
+    ctranslate2::Tokenizer sp(tokenizer_path.c_str());
 
     ctranslate2::ReplicaPoolConfig config {
         .num_threads_per_replica = 1,
         .max_queued_batches = 1,
     };
 
-    printf("Loading model...");
-    ctranslate2::models::ModelLoader model_loader(GENERATOR_PATH);
-    printf("Done!\n");
+    ctranslate2::models::ModelLoader model_loader(generator_path.c_str());
 
     // ctranslate2::GeneratorModel generator_model(model_loader, config);
-
-    printf("Loading generator...");
     ctranslate2::Generator generator_model(model_loader, config);
-    printf("Done!\n");
-
-    auto batch = CreateBatch("Hello world !");
-
-    printf("Generating...");
-    auto results = generator_model.generate_batch_async(batch);
-    printf("Done!\n");
-
-    for (const auto& token : results.at(0).get().sequences)
-        std::cout << token.at(0) << ' ';
-    std::cout << std::endl;
 
     std::string prompt = "Hey, Remi!";
 
     std::vector<std::string> tokens = sp.EncodeAsPieces(prompt);
     std::vector<int> ids = sp.EncodeAsIds(prompt);
+    // std::vector<BATCH_IDS> batch = CreateBatch(ids);
 
     std::cout << "Regular prompt: " << prompt << std::endl;
 
@@ -58,6 +50,12 @@ int main() {
         std::cout << token << ' ';
 
     std::cout << std::endl << "Decoded: " << sp.Decode(ids) << std::endl;
+
+    // auto results = generator_model.generate_batch_async(ids, ctranslate2::GenerationOptions(), 0L, ctranslate2::BatchType::Tokens);
+
+    // for (const auto& token : results.at(0).get().sequences)
+    //     std::cout << token.at(0) << ' ';
+    // std::cout << std::endl;
 
     return 0;
 }

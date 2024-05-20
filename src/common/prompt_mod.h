@@ -4,6 +4,9 @@
 #include "macros.h"
 
 template <typename T>
-BATCH CreateBatch(T);
+BATCH_SLICES CreateBatch(T);
+
+template <typename T>
+std::vector<BATCH_IDS> CreateBatch(T);
 
 #endif

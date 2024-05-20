@@ -5,7 +5,7 @@
 build
 output
 .venv
-models/ct2-ll7m
+assets/hftf
 lib
 
 # Compiled Object files
