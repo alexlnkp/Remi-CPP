@@ -1,7 +1,7 @@
 #ifndef TOKENIZER_H
 #define TOKENIZER_H
 
-#include "macros.h"
+#include "common/macros.h"
 
 namespace std {
 

@@ -3,27 +3,33 @@ cmake_minimum_required(VERSION 3.29)
 project(
   RemiCPP
   LANGUAGES CXX
-  VERSION 0.0.7
+  VERSION 0.0.9
   DESCRIPTION "Remi C++"
   HOMEPAGE_URL "https://github.com/alexlnkp/RemiCPP")
 
-set(CMAKE_CXX_FLAGS_DEBUG_INIT "-Wall -Werror -g -O0")
-set(CMAKE_CXX_FLAGS_RELEASE_INIT "-Wall -Werror -O3")
+set(CMAKE_CXX_FLAGS_INIT "-Wall -Werror")
+set(CMAKE_CXX_FLAGS_DEBUG_INIT "${CMAKE_CXX_FLAGS_INIT} -g -O0")
+set(CMAKE_CXX_FLAGS_RELEASE_INIT "${CMAKE_CXX_FLAGS_INIT} -O3")
 
 set(CMAKE_CXX_STANDARD 20)
 
 # file globbing ##############################################################
 
 file(GLOB_RECURSE sources src/*.cpp src/*.h)
+file(GLOB_RECURSE sources_common src/common/*.cpp src/common/*.h)
+file(GLOB_RECURSE models src/models/*.cpp src/models/*.h)
 
-# target definitions #########################################################
+# lib/sentencepiece ##########################################################
 
 add_subdirectory(lib/sentencepiece)
 
-add_executable(${PROJECT_NAME} ${sources})
+# target definitions #########################################################
+
+add_executable(${PROJECT_NAME} ${sources} ${sources_common} ${models})
 target_compile_options(${PROJECT_NAME} PUBLIC -std=c++20)
 
 target_include_directories(${PROJECT_NAME} PUBLIC lib)
+target_include_directories(${PROJECT_NAME} PUBLIC src)
 
 find_package(ctranslate2 REQUIRED)
 

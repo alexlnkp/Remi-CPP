@@ -4,7 +4,9 @@
 #include <ctranslate2/generator.h>
 #include <ctranslate2/models/model.h>
 
-#include "tokenizer.h"
+#include "common/prompt_mod.h"
+#include "models/tokenizer.h"
+// #include "models/generator.h"
 
 #define TOKENIZER_PATH "/home/alex/.huggingface/hub/models--JosephusCheung--LL7M/snapshots/9b31bbf38a43d41eaf166fb3573f706b23cb1c13/tokenizer.model"
 
@@ -13,17 +15,32 @@
 int main() {
     std::ios::sync_with_stdio(false);
 
-    auto sp = ctranslate2::Tokenizer(TOKENIZER_PATH);
+    ctranslate2::Tokenizer sp(TOKENIZER_PATH);
 
     ctranslate2::ReplicaPoolConfig config {
         .num_threads_per_replica = 1,
         .max_queued_batches = 1,
     };
 
-
+    printf("Loading model...");
     ctranslate2::models::ModelLoader model_loader(GENERATOR_PATH);
+    printf("Done!\n");
 
-    ctranslate2::Generator generator(model_loader, config);
+    // ctranslate2::GeneratorModel generator_model(model_loader, config);
+
+    printf("Loading generator...");
+    ctranslate2::Generator generator_model(model_loader, config);
+    printf("Done!\n");
+
+    auto batch = CreateBatch("Hello world !");
+
+    printf("Generating...");
+    auto results = generator_model.generate_batch_async(batch);
+    printf("Done!\n");
+
+    for (const auto& token : results.at(0).get().sequences)
+        std::cout << token.at(0) << ' ';
+    std::cout << std::endl;
 
     std::string prompt = "Hey, Remi!";
 
@@ -33,10 +50,12 @@ int main() {
     std::cout << "Regular prompt: " << prompt << std::endl;
 
     std::cout << "IDs: ";
-    for (auto& id : ids) { std::cout << id << ' '; }
+    for (auto& id : ids)
+        std::cout << id << ' ';
 
     std::cout << std::endl << "Tokens: ";
-    for (auto& token : tokens) { std::cout << token << ' '; }
+    for (auto& token : tokens)
+        std::cout << token << ' ';
 
     std::cout << std::endl << "Decoded: " << sp.Decode(ids) << std::endl;
 
