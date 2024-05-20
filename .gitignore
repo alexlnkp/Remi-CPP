@@ -6,6 +6,7 @@ build
 output
 .venv
 models/ct2-ll7m
+lib
 
 # Compiled Object files
 *.slo
