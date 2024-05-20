@@ -1,3 +1,7 @@
 [submodule "lib/sentencepiece"]
 	path = lib/sentencepiece
 	url = https://github.com/google/sentencepiece.git
+
+[submodule "lib/hedley"]
+	path = lib/hedley
+	url = https://github.com/nemequ/hedley.git

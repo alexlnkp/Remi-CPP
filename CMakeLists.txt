@@ -21,6 +21,8 @@ add_subdirectory(lib/sentencepiece)
 add_executable(${PROJECT_NAME} ${sources})
 target_compile_options(${PROJECT_NAME} PUBLIC -std=c++20)
 
+target_include_directories(${PROJECT_NAME} PUBLIC lib)
+
 find_package(ctranslate2 REQUIRED)
 
 target_link_libraries(${PROJECT_NAME} CTranslate2::ctranslate2)
