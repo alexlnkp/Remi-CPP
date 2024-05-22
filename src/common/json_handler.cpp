@@ -7,6 +7,7 @@
 
 namespace remi {
 
+
 namespace json {
 
 template nlohmann::json parse_json_file<const char*>(const char*);
@@ -25,10 +26,7 @@ nlohmann::json parse_json_file(T path) {
     return j;
 }
 
-
 } // namespace json
 
+
 } // namespace remi
-
-
-

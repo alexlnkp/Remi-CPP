@@ -1,8 +1,9 @@
 #include <sentencepiece_processor.h>
 #include "tokenizer.h"
 
-namespace ctranslate2 {
+namespace remi {
 
+namespace models {
 
 #pragma region Public methods
 
@@ -29,8 +30,6 @@ std::string Tokenizer::Decode(const std::vector<int>& ids) const {
 
 #pragma endregion
 
-
-
 #pragma region Private methods
 
 void Tokenizer::_load(const char *model_path) {
@@ -56,4 +55,7 @@ std::string Tokenizer::_decode(const std::vector<int> &ids) const {
 
 #pragma endregion
 
-} // namespace ctranslate2
+} // namespace models
+
+
+} // namespace remi

@@ -3,20 +3,26 @@
 #include <ctranslate2/generator.h>
 #include "generator.h"
 
-namespace ctranslate2 {
+namespace remi {
 
-GeneratorModel::GeneratorModel(models::ModelLoader& model_loader, ReplicaPoolConfig& config) {
+
+namespace models {
+
+GeneratorModel::GeneratorModel(ctranslate2::models::ModelLoader& model_loader, ctranslate2::ReplicaPoolConfig& config) {
     _model_loader = &model_loader;
     _config = &config;
-    _generator = new Generator(*_model_loader, *_config);
+    _generator = new ctranslate2::Generator(*_model_loader, *_config);
 }
 
 GeneratorModel::~GeneratorModel() {
     delete _generator;
 }
 
-BATCH_SLICES GeneratorModel::generate(const BATCH_SLICES &encoded_prompt) const {
+BatchSlices GeneratorModel::generate(const BatchSlices &encoded_prompt) const {
     return _generator->generate_batch_async(encoded_prompt).at(0).get().sequences;
 }
 
-} // namespace ctranslate2
+} // namespace models
+
+
+} // namespace remi

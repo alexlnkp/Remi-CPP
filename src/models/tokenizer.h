@@ -4,29 +4,18 @@
 #include "common/macros.h"
 
 namespace std {
-
-
-template <typename T, typename D>
-class unique_ptr;
-
-
+    template <typename T, typename D>
+    class unique_ptr;
 } // namespace std
 
 namespace sentencepiece {
-
-
-class SentencePieceProcessor;
-
-
+    class SentencePieceProcessor;
 } // namespace sentencepiece
 
-namespace ctranslate2 {
+namespace remi {
 
 
-using sentencepiece::SentencePieceProcessor;
-
-NON_NULL(1)
-U_PTR(SentencePieceProcessor) GetTokenizer(const char* model_path);
+namespace models {
 
 /**
  * \brief Tokenizer class that wraps a SentencePieceProcessor.
@@ -36,8 +25,7 @@ public:
     /**
      * \param model_path Path to the SentencePiece model.
      */
-    NON_NULL(1)
-    Tokenizer(const char *model_path);
+    NON_NULL(1) Tokenizer(const char *model_path);
 
     /**
      * Destructor.
@@ -52,8 +40,7 @@ public:
      *
      * \return A vector of subwords.
      */
-    NON_NULL(1)
-    std::vector<std::string> EncodeAsPieces(const std::string& text) const;
+    NON_NULL(1) std::vector<std::string> EncodeAsPieces(const std::string& text) const;
 
     /**
      * \brief Encodes a string into a sequence of IDs.
@@ -62,8 +49,7 @@ public:
      *
      * \return A vector of IDs.
      */
-    NON_NULL(1)
-    std::vector<int> EncodeAsIds(const std::string& text) const;
+    NON_NULL(1) std::vector<int> EncodeAsIds(const std::string& text) const;
 
     /**
      * \brief Decodes a sequence of IDs into a string.
@@ -72,15 +58,14 @@ public:
      *
      * \return The decoded string.
      */
-    NON_NULL(1)
-    std::string Decode(const std::vector<int>& ids) const;
+    NON_NULL(1) std::string Decode(const std::vector<int>& ids) const;
 
 
 private:
     /**
      * The SentencePieceProcessor instance.
      */
-    U_PTR(SentencePieceProcessor) _sp;
+    U_PTR(sentencepiece::SentencePieceProcessor) _sp;
 
     /**
      * \brief Decodes a sequence of IDs into a string.
@@ -89,8 +74,7 @@ private:
      *
      * \return The decoded string.
      */
-    NON_NULL(1)
-    std::string _decode(const std::vector<int> &ids) const;
+    NON_NULL(1) std::string _decode(const std::vector<int> &ids) const;
 
 
     /**
@@ -100,8 +84,7 @@ private:
      *
      * \return A vector of subwords.
      */
-    NON_NULL(1)
-    std::vector<std::string> _encode(const std::string &text) const;
+    NON_NULL(1) std::vector<std::string> _encode(const std::string &text) const;
 
     /**
      * \brief Encodes a string into a sequence of IDs.
@@ -110,8 +93,7 @@ private:
      *
      * \return A vector of IDs.
      */
-    NON_NULL(1)
-    std::vector<int> _encode_ids(const std::string &text) const;
+    NON_NULL(1) std::vector<int> _encode_ids(const std::string &text) const;
 
 protected:
     /**
@@ -119,17 +101,17 @@ protected:
      *
      * \param model_path Path to the SentencePiece model.
      */
-    NON_NULL(1)
-    void _load(const char *model_path);
+    NON_NULL(1) void _load(const char *model_path);
 
     /**
      * Friend class for the SentencePieceProcessor.
      */
-    friend class SentencePieceProcessor;
+    friend class sentencepiece::SentencePieceProcessor;
 };
 
+} // namespace models
 
-} // namespace ctranslate2
 
+} // namespace remi
 
 #endif

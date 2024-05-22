@@ -3,16 +3,18 @@
 
 #include "prompt_mod.h"
 
-template BATCH_SLICES CreateBatch<const char*>(const char*);
-template BATCH_SLICES CreateBatch<std::string>(std::string);
-template std::vector<BATCH_IDS> CreateBatch<BATCH_IDS>(BATCH_IDS);
+namespace remi {
 
-template <typename T>
-BATCH_SLICES CreateBatch(T prompt) {
+template BatchSlices CreateBatch<const char*>(const char*);
+template BatchSlices CreateBatch<std::string>(std::string);
+template std::vector<BatchIDs> CreateBatch<BatchIDs>(BatchIDs);
+
+template <typename T> BatchSlices CreateBatch(T prompt) {
     return {{prompt}};
 }
 
-template <typename T>
-std::vector<BATCH_IDS> CreateBatch(T prompt) {
+template <typename T> std::vector<BatchIDs> CreateBatch(T prompt) {
     return {prompt};
 }
+
+} // namespace remi

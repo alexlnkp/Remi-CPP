@@ -3,10 +3,14 @@
 
 #include "macros.h"
 
-template <typename T>
-BATCH_SLICES CreateBatch(T);
+namespace remi {
 
-template <typename T>
-std::vector<BATCH_IDS> CreateBatch(T);
+typedef std::vector<std::vector<std::string>> BatchSlices;
+typedef std::vector<int> BatchIDs;
+
+template <typename T> BatchSlices CreateBatch(T);
+template <typename T> std::vector<BatchIDs> CreateBatch(T);
+
+} // namespace remi
 
 #endif

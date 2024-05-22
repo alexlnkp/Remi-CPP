@@ -4,44 +4,45 @@
 #include "common/macros.h"
 
 namespace std {
-
-template <typename T, typename D>
-class unique_ptr;
-
-
-template <typename T, typename D>
-class vector;
-
+    template <typename T, typename D> class unique_ptr;
+    template <typename T, typename D> class vector;
 } // namespace std
 
 
 namespace ctranslate2 {
+    namespace models { class ModelLoader; }
 
-namespace models { class ModelLoader;}
+    class Generator;
+    class GenerationResult;
 
-class Generator;
-class GenerationResult;
+    class ReplicaPoolConfig;
+} // namespace ctranslate2
 
-class ReplicaPoolConfig;
 
+namespace remi {
+
+typedef std::vector<std::vector<std::string>> BatchSlices;
+
+
+namespace models {
 
 class GeneratorModel {
 public:
-    NON_NULL(1)
-    GeneratorModel(models::ModelLoader& model_loader, ReplicaPoolConfig& config);
+    NON_NULL(1) GeneratorModel(ctranslate2::models::ModelLoader& model_loader, ctranslate2::ReplicaPoolConfig& config);
 
     ~GeneratorModel();
 
-    NON_NULL(1)
-    BATCH_SLICES generate(const BATCH_SLICES &encoded_prompt) const;
+    NON_NULL(1) BatchSlices generate(const BatchSlices &encoded_prompt) const;
 
 private:
-    models::ModelLoader *_model_loader;
-    ReplicaPoolConfig *_config;
-    Generator *_generator;
+    ctranslate2::models::ModelLoader *_model_loader;
+    ctranslate2::ReplicaPoolConfig *_config;
+    ctranslate2::Generator *_generator;
 };
 
+} // namespace models
 
-} // namespace ctranslate2
+
+} // namespace remi
 
 #endif

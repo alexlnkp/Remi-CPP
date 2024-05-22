@@ -21,7 +21,7 @@ int main() {
     auto tokenizer_path = config_json["tokenizer_info"]["tokenizer_path"].get<std::string>();
     auto generator_path = config_json["model_info"]["model_path"].get<std::string>();
 
-    ctranslate2::Tokenizer sp(tokenizer_path.c_str());
+    remi::models::Tokenizer sp(tokenizer_path.c_str());
 
     ctranslate2::ReplicaPoolConfig config {
         .num_threads_per_replica = 1,
@@ -30,7 +30,7 @@ int main() {
 
     ctranslate2::models::ModelLoader model_loader(generator_path.c_str());
 
-    // ctranslate2::GeneratorModel generator_model(model_loader, config);
+    // remi::models::GeneratorModel generator_model(model_loader, config);
     ctranslate2::Generator generator_model(model_loader, config);
 
     std::string prompt = "Hey, Remi!";

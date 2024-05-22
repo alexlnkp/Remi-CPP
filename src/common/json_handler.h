@@ -5,16 +5,14 @@
 
 namespace remi {
 
+
 namespace json {
 
-template <typename T>
-nlohmann::json parse_json_file(T);
+    template <typename T> nlohmann::json parse_json_file(T);
 
 } // namespace json
 
+
 } // namespace remi
-
-
-
 
 #endif
