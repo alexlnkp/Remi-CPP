@@ -20,7 +20,16 @@
 
 1. Make sure your model is compatible with CTranslate2. If it isn't - use the [CTConverter script](#ctconverter-script)
    - Refer to [CTranslate2 documentation](https://opennmt.net/CTranslate2/guides/transformers.html) for list of conversion-compatible models.
-2. Not done yet
+2. Tweak the `config.json` file accordingly to modify the inference parameters.
+3. So far you need to change source code to modify prompt, but soon (when i fix the broken generation) you won't have to.
+4. Enjoy... I guess? Most of the results so far are stuff like this:
+```txt
+## Response:
+Assistant: 2147453983566521C*24...722-2262609322,CM2x3XP (5241)41D832MC
+
+177333323C7
+-5476193
+```
 
 ## License
 
