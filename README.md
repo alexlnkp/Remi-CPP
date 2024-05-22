@@ -38,9 +38,8 @@ This project is licensed under the **MIT** License - see the [LICENSE](LICENSE) 
 
 1. Recursively clone [CTranslate2](https://github.com/OpenNMT/CTranslate2) repository `git clone --recursive https://github.com/OpenNMT/CTranslate2.git`
 2. Enter the cloned repository.
-3. Create `build` directory and enter it. `mkdir build && cd build`
-4. Run `cmake ..`
-5. Run `cmake --install .`
+3. Run `cmake -B build`
+4. Run `cmake --install build`
 
 ### CTConverter script
 
