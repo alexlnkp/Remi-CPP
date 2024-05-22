@@ -58,7 +58,9 @@ public:
      *
      * \return The decoded string.
      */
-    NON_NULL(1) std::string Decode(const std::vector<int>& ids) const;
+    NON_NULL(1) std::string Decode(const std::vector<std::string> &slices) const;
+
+    NON_NULL(1) BatchSlices GeneratePrompt(std::vector<std::string> tokens) const;
 
 
 private:
@@ -74,7 +76,7 @@ private:
      *
      * \return The decoded string.
      */
-    NON_NULL(1) std::string _decode(const std::vector<int> &ids) const;
+    NON_NULL(1) std::string _decode(const std::vector<std::string> &pieces) const;
 
 
     /**

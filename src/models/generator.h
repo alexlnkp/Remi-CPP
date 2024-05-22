@@ -21,8 +21,7 @@ namespace ctranslate2 {
 
 namespace remi {
 
-typedef std::vector<std::vector<std::string>> BatchSlices;
-
+// typedef std::vector<std::vector<size_t>> BatchIDs;
 
 namespace models {
 
@@ -32,12 +31,18 @@ public:
 
     ~GeneratorModel();
 
+    void set_options(const ctranslate2::GenerationOptions& options);
+
     NON_NULL(1) BatchSlices generate(const BatchSlices &encoded_prompt) const;
+    // BatchSlices generate(const BatchIDs &prompt_ids) const;
+
+    size_t max_batch_size = 0U;
 
 private:
-    ctranslate2::models::ModelLoader *_model_loader;
-    ctranslate2::ReplicaPoolConfig *_config;
-    ctranslate2::Generator *_generator;
+    U_PTR(ctranslate2::GenerationOptions) _generation_options;
+    U_PTR(ctranslate2::models::ModelLoader) _model_loader;
+    U_PTR(ctranslate2::ReplicaPoolConfig) _config;
+    U_PTR(ctranslate2::Generator) _generator;
 };
 
 } // namespace models

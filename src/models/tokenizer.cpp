@@ -11,7 +11,9 @@ Tokenizer::Tokenizer(const char *model_path) {
     _load(model_path);
 }
 
-Tokenizer::~Tokenizer() { }
+Tokenizer::~Tokenizer() {
+    _sp.release();
+}
 
 
 std::vector<std::string> Tokenizer::EncodeAsPieces(const std::string& text) const {
@@ -23,10 +25,16 @@ std::vector<int> Tokenizer::EncodeAsIds(const std::string& text) const {
 }
 
 
-std::string Tokenizer::Decode(const std::vector<int>& ids) const {
-    return _decode(ids);
+std::string Tokenizer::Decode(const std::vector<std::string> &slices) const {
+    return _decode(slices);
 }
 
+
+BatchSlices Tokenizer::GeneratePrompt(std::vector<std::string> tokens) const {
+    tokens.insert(tokens.begin(), "<s>");
+    tokens.push_back("</s>");
+    return {tokens};
+}
 
 #pragma endregion
 
@@ -47,10 +55,8 @@ std::vector<int> Tokenizer::_encode_ids(const std::string &text) const {
 }
 
 
-std::string Tokenizer::_decode(const std::vector<int> &ids) const {
-    std::string text;
-    _sp->Decode(ids, &text);
-    return text;
+std::string Tokenizer::_decode(const std::vector<std::string> &pieces) const {
+    return _sp->DecodePieces(pieces);
 }
 
 #pragma endregion

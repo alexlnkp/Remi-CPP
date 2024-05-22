@@ -4,4 +4,6 @@
 #   define NON_NULL(...) HEDLEY_NON_NULL(__VA_ARGS__)
 #   define NON_EMPTY(...) HEDLEY_NON_EMPTY(__VA_ARGS__)
 #   define U_PTR(...) std::unique_ptr<__VA_ARGS__>
+typedef std::vector<std::vector<std::string>> BatchSlices;
+typedef std::vector<int> BatchIDs;
 #endif
