@@ -5,7 +5,7 @@ project(
   LANGUAGES CXX
   VERSION 0.0.9
   DESCRIPTION "Remi C++"
-  HOMEPAGE_URL "https://github.com/alexlnkp/RemiCPP")
+  HOMEPAGE_URL "https://github.com/alexlnkp/Remi-CPP")
 
 set(CMAKE_CXX_FLAGS_INIT "-Wall -Werror")
 set(CMAKE_CXX_FLAGS_DEBUG_INIT "${CMAKE_CXX_FLAGS_INIT} -g -O0")

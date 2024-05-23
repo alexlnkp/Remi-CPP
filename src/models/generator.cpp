@@ -3,6 +3,7 @@
 #include <ctranslate2/generator.h>
 #include <memory>
 
+#include "common/json_handler.h"
 #include "generator.h"
 
 namespace remi {
@@ -38,5 +39,21 @@ BatchSlices GeneratorModel::generate(const BatchSlices &prompt_slices) const {
 
 } // namespace models
 
+namespace generation {
+
+ctranslate2::GenerationOptions parse_options(remi::UserConfig &user_config) {
+    return ctranslate2::GenerationOptions {
+        .beam_size = user_config.BeamSize,
+        .repetition_penalty = user_config.RepetitionPenalty,
+        .max_length = user_config.MaxSequenceLength,
+        .sampling_topk = user_config.TopK,
+        .sampling_topp = user_config.TopP,
+        .include_prompt_in_result = true,
+    };
+}
+
+} // namespace generation
+
 
 } // namespace remi
+

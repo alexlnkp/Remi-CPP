@@ -47,6 +47,11 @@ private:
 
 } // namespace models
 
+namespace generation {
+
+ctranslate2::GenerationOptions parse_options(remi::UserConfig &user_config);
+
+}
 
 } // namespace remi
 

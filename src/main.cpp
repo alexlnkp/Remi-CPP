@@ -13,55 +13,43 @@
 #include "models/tokenizer.h"
 #include "models/generator.h"
 
-
 int main() {
     std::ios::sync_with_stdio(false);
 
-    nlohmann::json config_json = remi::json::parse_json_file("config.json");
+    remi::UserConfig user_conf = remi::json::ParseUserConfig(
+        remi::JsonFilePath{"config.json"}
+    );
 
-    auto tokenizer_path = config_json["tokenizer_info"]["tokenizer_path"].get<std::string>();
-    auto generator_path = config_json["model_info"]["model_path"].get<std::string>();
-
-    auto usr_req_device = config_json["device"].get<std::string>();
-    auto top_k = config_json["top_k"].get<size_t>();
-    auto top_p = config_json["top_p"].get<float>();
-    auto batch_size = config_json["batch_size"].get<size_t>();
-    auto max_seq_len = config_json["max_seq_len"].get<size_t>();
-    auto repetition_penalty = config_json["repetition_penalty"].get<float>();
-    auto temperature = config_json["temperature"].get<float>();
-
-    ctranslate2::GenerationOptions generation_options {
-        .beam_size = 1,
-        .repetition_penalty = repetition_penalty,
-        .max_length = max_seq_len,
-        .sampling_topk = top_k,
-        .sampling_topp = top_p,
-        .include_prompt_in_result = true,
-    };
+    ctranslate2::GenerationOptions generation_options = remi::generation::parse_options(user_conf);
 
     // User wants to use cuda but no gpu is detected by CTranslate2.
     // This is usually because the user compiled CTranslate2 without CUDA support.
-    if (usr_req_device == "cuda" && ctranslate2::get_gpu_count() == 0) {
+    if (user_conf.UsrReqDevice == "cuda" && ctranslate2::get_gpu_count() == 0) {
         std::cerr << "User requested CUDA but No GPU is detected by CTranslate2." << '\n'
-                  << "Please compile CTranslate2 with CUDA support" << std::endl;
+                  << "Please compile CTranslate2 with CUDA support" << '\n' << std::endl;
+        
+        // Fun fact: I could've used a local var for exit code and just goto; for going straight to the end...
+        // BUT! G++ didn't like that i skipped initialization of the automatically managed objects.
+        // So, in other words, even if an object is never initialized properly,
+        // G++ would still want to remove them at the end of scope... For some reason.
         return -1;
     }
 
-    ctranslate2::Device device(ctranslate2::str_to_device(usr_req_device));
+    ctranslate2::Device device(ctranslate2::str_to_device(user_conf.UsrReqDevice));
 
-    remi::models::Tokenizer sp(tokenizer_path.c_str());
+    remi::models::Tokenizer sp(user_conf.TokenizerPath.c_str());
 
     ctranslate2::ReplicaPoolConfig config {
         .num_threads_per_replica = 0,
         .max_queued_batches = 0,
     };
 
-    ctranslate2::models::ModelLoader model_loader(generator_path.c_str());
+    ctranslate2::models::ModelLoader model_loader(user_conf.GeneratorPath.c_str());
     model_loader.device = device;
 
     remi::models::GeneratorModel generator_model(model_loader, config);
     generator_model.set_options(generation_options);
-    generator_model.max_batch_size = batch_size;
+    generator_model.max_batch_size = user_conf.BatchSize;
 
     std::string prompt = "## History:" "\n"
                         "User: Hey!" "\n"
@@ -71,8 +59,7 @@ int main() {
                         "## Input:" "\n"
                         "System: You are an AI assistant. Carefully listen to user prompt and answer them in as much detail as possible." "\n"
                         "User: Hey! How are you doing?" "\n"
-                        "## Response:" "\n"
-                        "Assistant: ";
+                        "## Response:" "\n";
 
     auto results = generator_model.generate({sp.EncodeAsPieces(prompt)});
 
