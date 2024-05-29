@@ -17,30 +17,31 @@ set(JSON_BuildTests
     OFF
     CACHE INTERNAL "")
 
+set(INCLUDE_DIRECTORIES src lib)
+
 # file globbing ##############################################################
 
 file(GLOB_RECURSE sources src/*.cpp src/*.h)
 file(GLOB_RECURSE sources_common src/common/*.cpp src/common/*.h)
 file(GLOB_RECURSE models src/models/*.cpp src/models/*.h)
 
-# subdirectories ############################################################
-
-add_subdirectory(lib/json)
-add_subdirectory(lib/sentencepiece)
-
 # target definitions #########################################################
 
 add_executable(${PROJECT_NAME} ${sources} ${sources_common} ${models})
 target_compile_options(${PROJECT_NAME} PUBLIC -std=c++20)
 
-target_include_directories(${PROJECT_NAME} PUBLIC lib)
-target_include_directories(${PROJECT_NAME} PUBLIC src)
+target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIRECTORIES})
 
+find_package(nlohmann_json REQUIRED)
 find_package(ctranslate2 REQUIRED)
 
+# linking ####################################################################
+
 target_link_libraries(${PROJECT_NAME} CTranslate2::ctranslate2)
-target_link_libraries(${PROJECT_NAME} libsentencepiece.so)
+target_link_libraries(${PROJECT_NAME} sentencepiece)
 target_link_libraries(${PROJECT_NAME} nlohmann_json::nlohmann_json)
+
+# post build steps ###########################################################
 
 add_custom_command(
   TARGET ${PROJECT_NAME}

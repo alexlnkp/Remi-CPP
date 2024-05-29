@@ -41,14 +41,26 @@ This project is licensed under the **MIT** License - see the [LICENSE](LICENSE) 
 2. [ ] Adapter loader
 3. [ ] A working fine-tuner
 
+## Credit
+- [Hedley](https://nemequ.github.io/hedley/) made by [nemequ](https://github.com/nemequ)
+- [CTranslate2](https://opennmt.net/CTranslate2) made by [OpenNMT](https://github.com/OpenNMT)
+- [JSON](https://json.nlohmann.me/) library made by [Nlohmann](https://github.com/nlohmann)
+
 ## Misc
+
+### NLohmann's JSON library installation
+1. Clone [Nlohmann/JSON](https://github.com/nlohmann/json) repository `git clone https://github.com/nlohmann/json.git`
+2. Enter the cloned repository.
+3. Run `cmake -B build`
+4. Run `cmake --install build`
 
 ### CTranslate2 installation
 
 1. Recursively clone [CTranslate2](https://github.com/OpenNMT/CTranslate2) repository `git clone --recursive https://github.com/OpenNMT/CTranslate2.git`
 2. Enter the cloned repository.
 3. Run `cmake -B build`
-4. Run `cmake --install build`
+4. Run `cmake --build build`
+5. Run `cmake --install build`
 
 ### CTConverter script
 

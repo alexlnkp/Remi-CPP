@@ -6,7 +6,6 @@ build
 output
 .venv
 assets/hftf
-lib
 
 # Compiled Object files
 *.slo
